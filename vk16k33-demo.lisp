@@ -3,7 +3,7 @@
 ; Setup
 (i2c-vk16k33:system-setup i2c-vk16k33:TURN_ON_SYSTEM)
 (i2c-vk16k33:display-setup i2c-vk16k33:BLINKING_OFF i2c-vk16k33:DISPLAY_ON)
-(i2c-vk16k33:set-dimming i2c-vk16k33:DIM_2_16_DUTY)
+(i2c-vk16k33:set-dimming i2c-vk16k33:DIM_1_16_DUTY)
 
 ; Set display-memory
 (loop for i from 0 below 16 do
