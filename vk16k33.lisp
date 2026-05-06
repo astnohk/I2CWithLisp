@@ -16,8 +16,25 @@
         :DIG_3B
         :DIG_4A
         :DIG_4B
+        :DIM_1_16_DUTY
+        :DIM_2_16_DUTY
+        :DIM_3_16_DUTY
+        :DIM_4_16_DUTY
+        :DIM_5_16_DUTY
+        :DIM_6_16_DUTY
+        :DIM_7_16_DUTY
+        :DIM_8_16_DUTY
+        :DIM_9_16_DUTY
+        :DIM_10_16_DUTY
+        :DIM_11_16_DUTY
+        :DIM_12_16_DUTY
+        :DIM_13_16_DUTY
+        :DIM_14_16_DUTY
+        :DIM_15_16_DUTY
+        :DIM_16_16_DUTY
         :system-setup
         :display-setup
+        :set-dimming
         :set-display-memory
         :set-digit
         :send-display-memory))
@@ -50,6 +67,24 @@
 (defconstant DISPLAY_OFF #x00)
 (defconstant DISPLAY_ON #x01)
 
+;; Dimming
+(defconstant DIM_1_16_DUTY #x00)
+(defconstant DIM_2_16_DUTY #x01)
+(defconstant DIM_3_16_DUTY #x02)
+(defconstant DIM_4_16_DUTY #x03)
+(defconstant DIM_5_16_DUTY #x04)
+(defconstant DIM_6_16_DUTY #x05)
+(defconstant DIM_7_16_DUTY #x06)
+(defconstant DIM_8_16_DUTY #x07)
+(defconstant DIM_9_16_DUTY #x08)
+(defconstant DIM_10_16_DUTY #x09)
+(defconstant DIM_11_16_DUTY #x0a)
+(defconstant DIM_12_16_DUTY #x0b)
+(defconstant DIM_13_16_DUTY #x0c)
+(defconstant DIM_14_16_DUTY #x0d)
+(defconstant DIM_15_16_DUTY #x0e)
+(defconstant DIM_16_16_DUTY #x0f)
+
 ;; Patterns
 (defconstant DIG_1A #x01)
 (defconstant DIG_1B #x10)
@@ -81,6 +116,12 @@
           (logior #x80
                   blinking
                   display))
+    (i2c-dev:i2c-write DEVADDR *wbuf* 1))
+
+(defun set-dimming (dim)
+    (setf (i2c-dev:i2c-buffer-aref *wbuf* 0)
+          (logior #xe0
+                  dim))
     (i2c-dev:i2c-write DEVADDR *wbuf* 1))
 
 (defun set-display-memory (ind val)
