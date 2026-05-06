@@ -19,6 +19,7 @@
         :system-setup
         :display-setup
         :set-display-memory
+        :set-digit
         :send-display-memory))
 (in-package :i2c-vk16k33)
 
@@ -84,6 +85,16 @@
 
 (defun set-display-memory (ind val)
     (setf (aref *display-memory* ind) val))
+
+(defun set-digit (digit cols)
+    (let ((digit-filter (logand #xff (lognot digit))))
+        (loop for i from 0 below 7 do
+            (setf (aref *display-memory* (* 2 i))
+                  (logior (logand (aref *display-memory* (* 2 i))
+                                  digit-filter)
+                          (if (> (logand #x01 (ash cols (- 0 i)))
+                                 0)
+                              digit 0))))))
 
 (defun send-display-memory ()
     (setf (i2c-dev:i2c-buffer-aref *wbuf* 0) ADDR_DISPLAY_MEMORY)
