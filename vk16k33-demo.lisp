@@ -8,10 +8,18 @@
 ; Set display-memory
 (loop for i from 0 below 16 do
     (i2c-vk16k33:set-display-memory i #x00))
-(i2c-vk16k33:set-digit i2c-vk16k33:DIG_1A #x01)
-(i2c-vk16k33:set-digit i2c-vk16k33:DIG_2A #x02)
-(i2c-vk16k33:set-digit i2c-vk16k33:DIG_3A #x04)
-(i2c-vk16k33:set-digit i2c-vk16k33:DIG_4A #x08)
 
+(i2c-vk16k33:set-digits i2c-vk16k33:DIG_1 i2c-vk16k33:SEGMENT_1)
+(i2c-vk16k33:set-digits i2c-vk16k33:DIG_2 i2c-vk16k33:SEGMENT_2)
+(i2c-vk16k33:set-digits i2c-vk16k33:DIG_3 i2c-vk16k33:SEGMENT_3)
+(i2c-vk16k33:set-digits i2c-vk16k33:DIG_4 i2c-vk16k33:SEGMENT_4)
+(i2c-vk16k33:send-display-memory)
+
+(sleep 1)
+
+(i2c-vk16k33:set-digits-number i2c-vk16k33:DIG_1 9)
+(i2c-vk16k33:set-digits-number i2c-vk16k33:DIG_2 8)
+(i2c-vk16k33:set-digits-number i2c-vk16k33:DIG_3 7)
+(i2c-vk16k33:set-digits-number i2c-vk16k33:DIG_4 6)
 (i2c-vk16k33:send-display-memory)
 

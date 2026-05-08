@@ -8,14 +8,10 @@
         :BLINKING_0_5HZ
         :DISPLAY_OFF
         :DISPLAY_ON
-        :DIG_1A
-        :DIG_1B
-        :DIG_2A
-        :DIG_2B
-        :DIG_3A
-        :DIG_3B
-        :DIG_4A
-        :DIG_4B
+        :DIG_1
+        :DIG_2
+        :DIG_3
+        :DIG_4
         :DIM_1_16_DUTY
         :DIM_2_16_DUTY
         :DIM_3_16_DUTY
@@ -32,11 +28,24 @@
         :DIM_14_16_DUTY
         :DIM_15_16_DUTY
         :DIM_16_16_DUTY
+        :SEGMENT_NULL
+        :SEGMENT_MINUS
+        :SEGMENT_0
+        :SEGMENT_1
+        :SEGMENT_2
+        :SEGMENT_3
+        :SEGMENT_4
+        :SEGMENT_5
+        :SEGMENT_6
+        :SEGMENT_7
+        :SEGMENT_8
+        :SEGMENT_9
         :system-setup
         :display-setup
         :set-dimming
         :set-display-memory
-        :set-digit
+        :set-digits
+        :set-digits-number
         :send-display-memory))
 (in-package :i2c-vk16k33)
 
@@ -86,14 +95,23 @@
 (defconstant DIM_16_16_DUTY #x0f)
 
 ;; Patterns
-(defconstant DIG_1A #x01)
-(defconstant DIG_1B #x10)
-(defconstant DIG_2A #x02)
-(defconstant DIG_2B #x20)
-(defconstant DIG_3A #x04)
-(defconstant DIG_3B #x40)
-(defconstant DIG_4A #x08)
-(defconstant DIG_4B #x80)
+(defconstant DIG_1 #x1001)
+(defconstant DIG_2 #x2002)
+(defconstant DIG_3 #x4004)
+(defconstant DIG_4 #x8008)
+
+(defconstant SEGMENT_NULL #x0000)
+(defconstant SEGMENT_MINUS #x0140)
+(defconstant SEGMENT_0 #x003f)
+(defconstant SEGMENT_1 #x0006)
+(defconstant SEGMENT_2 #x015b)
+(defconstant SEGMENT_3 #x014f)
+(defconstant SEGMENT_4 #x0166)
+(defconstant SEGMENT_5 #x016d)
+(defconstant SEGMENT_6 #x017d)
+(defconstant SEGMENT_7 #x0007)
+(defconstant SEGMENT_8 #x01ff)
+(defconstant SEGMENT_9 #x016f)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Buffers
@@ -136,6 +154,23 @@
                           (if (> (logand #x01 (ash cols (- 0 i)))
                                  0)
                               digit 0))))))
+
+(defun set-digits (digits cols)
+    (set-digit (logand #xff digits) (logand #xff cols))
+    (set-digit (logand #xff (ash digits -8)) (logand #xff (ash cols -8))))
+
+(defun set-digits-number (digits num)
+    (cond ((= num 0) (set-digits digits SEGMENT_0))
+          ((= num 1) (set-digits digits SEGMENT_1))
+          ((= num 2) (set-digits digits SEGMENT_2))
+          ((= num 3) (set-digits digits SEGMENT_3))
+          ((= num 4) (set-digits digits SEGMENT_4))
+          ((= num 5) (set-digits digits SEGMENT_5))
+          ((= num 6) (set-digits digits SEGMENT_6))
+          ((= num 7) (set-digits digits SEGMENT_7))
+          ((= num 8) (set-digits digits SEGMENT_8))
+          ((= num 9) (set-digits digits SEGMENT_9))
+          (5 (set-digits digits SEGMENT_0))))
 
 (defun send-display-memory ()
     (setf (i2c-dev:i2c-buffer-aref *wbuf* 0) ADDR_DISPLAY_MEMORY)
