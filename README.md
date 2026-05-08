@@ -39,6 +39,7 @@ $ sbcl --load lsm6ds3tr-demo.lisp
 $ sbcl --load haptic-demo.lisp
 $ sbcl --load mpr121-demo.lisp
 $ sbcl --load rv8803-demo.lisp
+$ sbcl --load vk16k33-demo.lisp
 ```
 
 ### VL53L5CX
@@ -128,6 +129,12 @@ It has alarm and countdown interrupt.
 
 [SparkFun Micro OLED Breakout](https://www.sparkfun.com/products/22495) is micro OLED breakout board.
 It has OLED with resolution of 64x48.
+
+### VK16K33 Alphanumeric Display
+
+[Alphanumeric Display - VK16K33](https://www.sparkfun.com/sparkfun-qwiic-alphanumeric-display-red.html) is 14 segments LED display alphanumeric display.
+VK16K33 has display memory which can be set via I2C.
+It has features for blinking or dimming by setting registers.
 
 ### VL53L5CX
 
